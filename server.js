@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const Cart = require("./models/Cart")
 
 const { PORT } = require("./config");
 const logger = require("./utils/logger");
@@ -32,11 +33,13 @@ app.use("/kill", killRoutes);
 app.use(homeRoutes);
 app.use((request, response) => {
   const { url } = request;
+  const cartCount = Cart.getProductsQuantity()
 
   response.status(STATUS_CODE.NOT_FOUND).render("404", {
     headTitle: "404",
     menuLinks: MENU_LINKS,
     activeLinkPath: "",
+    cartCount
   });
   logger.getErrorLog(url);
 });
